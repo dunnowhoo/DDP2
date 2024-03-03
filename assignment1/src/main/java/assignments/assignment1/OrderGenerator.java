@@ -4,6 +4,8 @@ import java.util.Scanner;
 
 public class OrderGenerator {
     private static final Scanner input = new Scanner(System.in);
+    private static String code39CharacterSet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    private static String[] dataLokasi = {"P","U","T","S","B"};
 
     /* 
     Anda boleh membuat method baru sesuai kebutuhan Anda
@@ -73,7 +75,6 @@ public class OrderGenerator {
         orderID += noTelepon;
 
         // 2 Karakter Checksum
-        String code39CharacterSet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         String code39Encoded = "";
         // Mengonversi setiap karakter dalam inputString menjadi kode numerik Code 39 sekaligus menjumlahkan checksum
         int evenSum = 0;
@@ -120,6 +121,35 @@ public class OrderGenerator {
         String bill = "";
         String tanggalOrder = "";
         String ongkos = "";
+
+        // validasi orderID
+        if (orderID.length() < 16) {
+            return ("Order ID minimal 16 karakter");
+        }
+        // checksum
+        int evenSum = 0;
+        int oddSum = 0;
+        for (int i = 0; i < orderID.length() - 2 ; i++) {
+            char currentChar = orderID.charAt(i);
+            int charIndex = code39CharacterSet.indexOf(currentChar);
+            if (i % 2 == 0) {
+                evenSum += charIndex;
+            }
+            else {
+                oddSum += charIndex;
+            }
+        }
+        evenSum %= 36;
+        oddSum %= 36;
+        // mengubah Value ke Karakter
+        char evenChar = code39CharacterSet.charAt(evenSum);
+        char oddChar = code39CharacterSet.charAt(oddSum);
+
+        // Jika orderID tidak valid
+        if (evenChar != orderID.charAt(orderID.length() - 2) || oddChar != orderID.charAt(orderID.length() - 1)){
+            return ("Silahkan masukkan Order ID yang valid!");
+        }
+
         // Menentukan harga ongkos kirim
         switch (lokasi) {
             case "P":
@@ -160,12 +190,6 @@ public class OrderGenerator {
     }
 
     public static void main(String[] args) {
-        String[] orderIDs = new String[10000];
-        String[] bills = new String[10000];
-        String[] dataLokasi = {"P","U","T","S","B"};
-        int indexOrder = 0;
-        int indexBill = 0;
-
 // Loop utama program
         while (true) {
             showMenu(); // Menampilkan menu
@@ -217,50 +241,47 @@ public class OrderGenerator {
                     }
                     break;
                 }
-                // Generate dan simpan Order ID
-                orderIDs[indexOrder] = generateOrderID(namaRestoran,tanggalOrder,noTelepon);
-                System.out.println("Order ID " + orderIDs[indexOrder] + " diterima!" + "\n");
-                indexOrder++;
+                // Generate Order ID
+                System.out.println("Order ID " + generateOrderID(namaRestoran,tanggalOrder,noTelepon) + " diterima!" + "\n");
             }
             // Membuat tagihan
             else if (command.equals("2")) {
                 while (true) {
                     // Validasi input Order ID
-                    if (orderIDs[0] == null){
-                        System.out.println("Belum ada data Order ID yang tersedia!");
-                        break;
-                    }
 
-                    boolean found = false;
-                    boolean available = false;
+                    boolean found;
                     System.out.print("Order ID: ");
                     String orderID = input.nextLine().trim();
 
-                    // Mencari Order ID yang cocok
-                    for (int i = 0; i < orderIDs.length; i++) {
-                        if (orderIDs[i].equals(orderID)) {
-                            indexBill = i;
-                            if (bills[indexBill] != null) {
-                                System.out.println("Bill sudah tersedia");
-                                System.out.println(bills[indexBill]);
-                                available = true;
-                                break;
-                            }
-                            else {
-                                found = true;
-                                break;
-                            }
+                    if (orderID.length() < 16) {
+                        System.out.println("Order ID minimal 16 karakter");
+                        continue;
+                    }
+                    // validasi checksum
+                    int evenSum = 0;
+                    int oddSum = 0;
+                    for (int i = 0; i < orderID.length() - 2 ; i++) {
+                        char currentChar = orderID.charAt(i);
+                        int charIndex = code39CharacterSet.indexOf(currentChar);
+                        if (i % 2 == 0) {
+                            evenSum += charIndex;
+                        }
+                        else {
+                            oddSum += charIndex;
                         }
                     }
-                    // Jika Bill sudah tersedia
-                    if (available) {
-                        break;
-                    }
-                    // Jika Order ID tidak valid
-                    if (!found) {
+                    evenSum %= 36;
+                    oddSum %= 36;
+                    // mengubah Value ke Karakter
+                    char evenChar = code39CharacterSet.charAt(evenSum);
+                    char oddChar = code39CharacterSet.charAt(oddSum);
+
+                    // Jika orderID tidak valid
+                    if (evenChar != orderID.charAt(orderID.length() - 2) || oddChar != orderID.charAt(orderID.length() - 1)){
                         System.out.println("Silahkan masukkan Order ID yang valid!");
                         continue;
                     }
+
                     // Validasi input Lokasi Pengiriman
                     System.out.print("Lokasi Pengiriman: ");
                     String lokasi = input.nextLine().trim().toUpperCase();
@@ -277,8 +298,7 @@ public class OrderGenerator {
                         continue;
                     }
                     // Generate dan simpan tagihan
-                    bills[indexBill] = generateBill(orderID, lokasi);
-                    System.out.println(bills[indexBill]);
+                    System.out.println(generateBill(orderID, lokasi));
                     break;
                 }
             }
