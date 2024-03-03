@@ -116,6 +116,7 @@ public class OrderGenerator {
      */
     public static String generateBill(String orderID, String lokasi){
         // TODO:Lengkapi method ini sehingga dapat mengenerate Bill sesuai ketentuan
+        lokasi = lokasi.toUpperCase();
         String bill = "";
         String tanggalOrder = "";
         String ongkos = "";
@@ -149,7 +150,12 @@ public class OrderGenerator {
             }
         }
         //Generate Bill
-        bill = "Bill:" + "\n" + "Order ID: " + orderID + "\n" + "Tanggal Pemesanan: " + tanggalOrder + "\n" + "Lokasi Pengiriman: " + lokasi + "\n" + "Biaya Ongkos Kirim: " + "Rp " + ongkos + "\n" + "";
+        bill = "Bill:\n" + //
+                "Order ID: " + orderID + "\n" + //
+                "Tanggal Pemesanan: " + tanggalOrder + "\n" + //
+                "Lokasi Pengiriman: " + lokasi + "\n" + //
+                "Biaya Ongkos Kirim: " + "Rp " + ongkos + "\n" + //
+                "";
         return bill;
     }
 
