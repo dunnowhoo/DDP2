@@ -51,7 +51,7 @@ Untuk menjalankan program:
 Untuk menguji program dengan *test case* yang disediakan:
 
 ```bash
-> gradlew.bat :assignment1:test
+> ./gradlew :assignment1:test
 ```
 
 > Tips: kamu bisa memeriksa hasil tes dalam bentuk dokumen HTML. Lihat dokumen

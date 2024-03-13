@@ -33,7 +33,7 @@ public class OrderGenerator {
     /*
      * Method ini digunakan untuk membuat ID
      * dari nama restoran, tanggal order, dan nomor telepon
-     * 
+     *
      * @return String Order ID dengan format sesuai pada dokumen soal
      */
     public static String generateOrderID(String namaRestoran, String tanggalOrder, String noTelepon) {
@@ -107,7 +107,7 @@ public class OrderGenerator {
     /*
      * Method ini digunakan untuk membuat bill
      * dari order id dan lokasi
-     * 
+     *
      * @return String Bill dengan format sesuai di bawah:
      *          Bill:
      *          Order ID: [Order ID]
