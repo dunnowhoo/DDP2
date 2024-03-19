@@ -4,23 +4,23 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Order {
-     // TODO: tambahkan attributes yang diperlukan untuk class ini
-    private String orderID;
-    private String tanggalPemesanan;
-    private int biayaOngkosKirim;
-    private Restaurant restaurant;
-    private ArrayList<Menu> items;
-    private boolean orderFinished;
+    // Attributes yang diperlukan untuk class ini
+    private String orderID; // ID pesanan
+    private String tanggalPemesanan; // Tanggal pesanan
+    private int biayaOngkosKirim; // Biaya ongkos kirim
+    private Restaurant restaurant; // Restoran terkait
+    private ArrayList<Menu> items; // Daftar menu dalam pesanan
+    private boolean orderFinished; // Status pesanan
 
-    // Constructor
+    // Constructor untuk membuat objek Order dengan atribut yang diberikan
     public Order(String orderID, String tanggalPemesanan, int biayaOngkosKirim, Restaurant restaurant, Menu[] items) {
         this.orderID = orderID;
         this.tanggalPemesanan = tanggalPemesanan;
         this.biayaOngkosKirim = biayaOngkosKirim;
         this.restaurant = restaurant;
         this.items = new ArrayList<Menu>();
-        Collections.addAll(this.items, items);
-        this.orderFinished = false;
+        Collections.addAll(this.items, items); // Menyalin array Menu ke ArrayList items
+        this.orderFinished = false; // Pesanan awalnya belum selesai
     }
 
     // Getter untuk orderID
@@ -95,7 +95,7 @@ public class Order {
             sb.append("- ").append(item.toString()).append("\n");
         }
         sb.append("Biaya Ongkos Kirim : Rp ").append(biayaOngkosKirim).append("\n");
-        sb.append("Total Biaya : Rp ").append(hitungTotalBiaya()).append("\n");
+        sb.append("Total Biaya : Rp ").append(hitungTotalBiaya());
         return sb.toString();
     }
 

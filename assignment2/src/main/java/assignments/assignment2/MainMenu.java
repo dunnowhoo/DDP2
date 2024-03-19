@@ -266,6 +266,7 @@ public class MainMenu {
         // TODO: Implementasi method untuk handle ketika customer ingin melihat menu
         System.out.println("------------Lihat Menu------------");
         String namaRestoran;
+        boolean found = false;
         while (true){
             System.out.print("Nama: ");
             namaRestoran= input.nextLine().trim();
@@ -275,12 +276,17 @@ public class MainMenu {
                     if (resto.getNama().equalsIgnoreCase(namaRestoran)) {
                         String output = resto.toString();
                         System.out.println(output);
+                        found = true;
                         break;
                     }
                 }
+            }
+            if (!found) {
+                System.out.println("Restoran tidak terdaftar pada sistem!");
+            }
+            else {
                 break;
             }
-            System.out.println("Restoran tidak terdaftar pada sistem!");
         }
     }
 
@@ -289,13 +295,19 @@ public class MainMenu {
         System.out.println("------------Update Status Pesanan------------");
         String orderID;
         String status;
+        boolean success = false;
         while (true) {
             System.out.print("Order ID: ");
             orderID = input.nextLine().trim();
 
             if (orderIDs.contains(orderID)) {
+                System.out.print("Status: ");
                 status = input.nextLine().trim();
 
+                if (!status.equalsIgnoreCase("selesai")){
+                    System.out.println("Status pesanan dengan ID " + orderID + " tidak berhasil diupdate!");
+                    continue;
+                }
                 for (Order ord : user.getOrderHistory()){
                     if (ord.getOrderID().equals(orderID)){
                         if (ord.isOrderFinished()){
@@ -305,11 +317,14 @@ public class MainMenu {
                         else {
                             ord.finishOrder();
                             System.out.println("Status pesanan dengan ID " + orderID + " berhasil diupdate!");
+                            success = true;
                             break;
                         }
                     }
                 }
-                break;
+                if (success){
+                    break;
+                }
             }
             else {
                 System.out.println("Order ID tidak dapat ditemukan.");
