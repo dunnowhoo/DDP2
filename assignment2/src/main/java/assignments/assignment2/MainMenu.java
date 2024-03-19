@@ -196,16 +196,24 @@ public class MainMenu {
                 }
 
                 int index = 0;
+                boolean done = false;
                 for (Restaurant resto : restoList) {
                     if (resto.getNama().equalsIgnoreCase(namaRestoran)) {
-                        for (Menu m : resto.getMenu()) {
-                            if (m.getNamaMakanan().equals(namaMenu[index])) {
-                                menu[index] = m;
-                                index++;
-                                break; // Keluar dari loop setelah menemukan menu yang cocok
+                        while (true){
+                            for (Menu m : resto.getMenu()) {
+                                if (m.getNamaMakanan().equals(namaMenu[index])) {
+                                    menu[index] = m;
+                                    index++;
+                                }
+                                if (index == jumlahPesanan){
+                                    done = true;
+                                    break;
+                                }
+                            }
+                            if (done){
+                                break;
                             }
                         }
-                        break; // Keluar dari loop setelah menemukan restoran yang cocok
                     }
                 }
 

@@ -73,7 +73,25 @@ public class Order {
         sb.append("Restaurant : ").append(restaurant != null ? restaurant.getNama() : "Belum ditentukan").append("\n");
         sb.append("Status Pengiriman : ").append(orderFinished ? "Selesai" : "Belum selesai").append("\n");
         sb.append("Pesanan :\n");
-        for (Menu item : items) {
+        // Konversi ArrayList menjadi array
+        Menu[] itemsArray = items.toArray(new Menu[items.size()]);
+
+        // Bubble sort untuk mengurutkan array berdasarkan harga
+        int n = itemsArray.length;
+        for (int i = 0; i < n-1; i++) {
+            for (int j = 0; j < n-i-1; j++) {
+                // Bandingkan harga makanan pada posisi j dengan harga makanan pada posisi j+1
+                if (itemsArray[j].getHarga() > itemsArray[j+1].getHarga()) {
+                    // Tukar elemen jika harga makanan pada posisi j lebih besar dari harga makanan pada posisi j+1
+                    Menu temp = itemsArray[j];
+                    itemsArray[j] = itemsArray[j+1];
+                    itemsArray[j+1] = temp;
+                }
+            }
+        }
+
+        // Proses array yang sudah diurutkan dalam loop
+        for (Menu item : itemsArray) {
             sb.append("- ").append(item.toString()).append("\n");
         }
         sb.append("Biaya Ongkos Kirim : Rp ").append(biayaOngkosKirim).append("\n");

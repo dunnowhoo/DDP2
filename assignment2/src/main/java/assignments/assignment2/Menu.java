@@ -23,9 +23,6 @@ public class Menu {
     // Method toString() dengan format namaMakanan spasi harga
     @Override
     public String toString() {
-        System.out.println(getNamaMakanan());
-        System.out.println(getHarga());
-        System.out.println("p");
         return namaMakanan + " " + (int) harga;
     }
 }
