@@ -4,8 +4,8 @@ import java.util.Scanner;
 
 public class OrderGenerator {
     private static final Scanner input = new Scanner(System.in);
-    private static String code39CharacterSet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    private static String[] dataLokasi = {"P","U","T","S","B"};
+    private static final String code39CharacterSet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    private static final String[] dataLokasi = {"P","U","T","S","B"};
 
     /* 
     Anda boleh membuat method baru sesuai kebutuhan Anda
@@ -179,6 +179,8 @@ public class OrderGenerator {
                 tanggalOrder += currentChar;
             }
         }
+
+        String restaurant =
         //Generate Bill
         bill = "Bill:\n" + //
                 "Order ID: " + orderID + "\n" + //

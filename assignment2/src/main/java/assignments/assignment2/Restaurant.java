@@ -28,4 +28,15 @@ public class Restaurant {
     public String getNama() {
         return this.nama;
     }
+
+    // Method toString() untuk menampilkan menu dalam format yang diminta
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Menu :\n");
+        for (int i = 0; i < menu.size(); i++) {
+            sb.append(i + 1).append(". ").append(menu.get(i).toString()).append("\n");
+        }
+        return sb.toString();
+    }
 }
