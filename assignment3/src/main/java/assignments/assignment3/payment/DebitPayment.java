@@ -13,27 +13,27 @@ public class DebitPayment implements DepeFoodPaymentSystem {
 
     // Metode untuk memproses pembayaran
     @Override
-    public boolean processPayment(long amount) {
+    public long processPayment(long amount) {
         // Jika pengguna tidak memiliki metode pembayaran Debit
         if (!(user.getPayment() instanceof DebitPayment)) {
             System.out.println("User belum memiliki metode pembayaran ini!");
-            return false;
+            return 0;
         }
         // Jika jumlah pesanan kurang dari harga total minimum
         if (amount < MINIMUM_TOTAL_PRICE) {
             System.out.println("Jumlah pesanan < 50000 mohon menggunakan metode pembayaran yang lain");
-            return false;
+            return 0;
         }
         // Jika saldo pengguna tidak mencukupi
         else if (amount > user.getSaldo()) {
             System.out.println("Saldo tidak mencukupi mohon menggunakan metode pembayaran yang lain");
-            return false;
+            return 0;
         }
         // Jika semua syarat terpenuhi, proses pembayaran
         else {
             user.setSaldo(user.getSaldo() - amount); // Kurangi saldo pengguna
             System.out.println("Berhasil Membayar Bill sebesar Rp" + amount + "\n"); // Tampilkan pesan sukses
-            return true; // Pembayaran berhasil
+            return amount; // Mengembalikan jumlah yang dibayar
         }
     }
 }

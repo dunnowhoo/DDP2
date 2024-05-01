@@ -13,11 +13,11 @@ public class CreditCardPayment implements DepeFoodPaymentSystem {
 
     // Metode untuk memproses pembayaran
     @Override
-    public boolean processPayment(long amount) {
+    public long processPayment(long amount) {
         // Jika pengguna tidak memiliki metode pembayaran Credit Card
         if (!(user.getPayment() instanceof CreditCardPayment)) {
             System.out.println("User belum memiliki metode pembayaran ini!");
-            return false;
+            return 0;
         }
         // Menghitung biaya transaksi
         long transactionFee = countTransactionFee(amount);
@@ -26,13 +26,13 @@ public class CreditCardPayment implements DepeFoodPaymentSystem {
         // Jika saldo pengguna tidak mencukupi
         if (total > user.getSaldo()) {
             System.out.println("Saldo tidak mencukupi mohon menggunakan metode pembayaran yang lain");
-            return false;
+            return 0;
         } else {
             // Jika saldo mencukupi, kurangi saldo pengguna sebesar total
             user.setSaldo(user.getSaldo() - total);
             // Tampilkan pesan sukses
             System.out.println("Berhasil Membayar Bill sebesar Rp " + amount + " dengan biaya transaksi sebesar Rp " + transactionFee + "\n");
-            return true; // Pembayaran berhasil
+            return total; // Mengembalikan total yang dibayar
         }
     }
 

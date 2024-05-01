@@ -156,7 +156,7 @@ public class CustomerSystemCLI extends UserSystemCLI{
             // Meminta pilihan metode pembayaran dari pengguna
             System.out.print("Pilihan Metode Pembayaran: ");
             int paymentMethod = Integer.parseInt(input.nextLine().trim());
-            boolean paymentSuccess = false;
+            long paymentAmount = 0;
             long totalHarga = Math.round(order.getTotalHarga());
             // Jika pengguna memilih metode pembayaran Credit Card
             if(paymentMethod == 1){
@@ -165,7 +165,7 @@ public class CustomerSystemCLI extends UserSystemCLI{
                     CreditCardPayment creditCardPayment = (CreditCardPayment) userLoggedIn.getPayment();
                     creditCardPayment.setUser(userLoggedIn);
                     // Proses pembayaran
-                    paymentSuccess = creditCardPayment.processPayment(totalHarga);
+                    paymentAmount = creditCardPayment.processPayment(totalHarga);
                 } else {
                     // Jika pengguna tidak memiliki metode pembayaran Credit Card, tampilkan pesan error
                     System.out.println("Metode pembayaran kartu kredit tidak tersedia untuk pengguna ini.\n");
@@ -177,7 +177,7 @@ public class CustomerSystemCLI extends UserSystemCLI{
                     DebitPayment debitPayment = (DebitPayment) userLoggedIn.getPayment();
                     debitPayment.setUser(userLoggedIn);
                     // Proses pembayaran
-                    paymentSuccess = debitPayment.processPayment(totalHarga);
+                    paymentAmount = debitPayment.processPayment(totalHarga);
                 } else {
                     // Jika pengguna tidak memiliki metode pembayaran Debit, tampilkan pesan error
                     System.out.println("Metode pembayaran debit tidak tersedia untuk pengguna ini.\n");
@@ -187,7 +187,7 @@ public class CustomerSystemCLI extends UserSystemCLI{
                 System.out.println("Metode pembayaran tidak valid.\n");
             }
             // Jika pembayaran berhasil
-            if(paymentSuccess){
+            if(paymentAmount > 0){
                 // Tambahkan total harga ke saldo restoran
                 Restaurant restaurant = order.getRestaurant();
                 restaurant.addSaldo(totalHarga);
