@@ -1,22 +1,29 @@
-package assignments.assignment2;
+package assignments.assignment3;
+
+import assignments.assignment2.Order;
+import assignments.assignment3.payment.DepeFoodPaymentSystem;
 
 import java.util.ArrayList;
 
 public class User {
-
+    
     private String nama;
     private String nomorTelepon;
     private String email;
     private ArrayList<Order> orderHistory;
     public String role;
+    private DepeFoodPaymentSystem payment;
+    private long saldo;
 
     private String lokasi;
-    public User(String nama, String nomorTelepon, String email, String lokasi, String role){
+    public User(String nama, String nomorTelepon, String email, String lokasi, String role, DepeFoodPaymentSystem payment, long saldo){
         this.nama = nama;
         this.nomorTelepon = nomorTelepon;
         this.email = email;
         this.lokasi = lokasi;
         this.role = role;
+        this.payment = payment;
+        this.saldo = saldo;
         orderHistory = new ArrayList<>();
     }
     public String getEmail() {
@@ -49,6 +56,18 @@ public class User {
     public String toString() {
         // TODO Auto-generated method stub
         return String.format("User dengan nama %s dan nomor telepon %s", nama, nomorTelepon);
+    }
+
+    public DepeFoodPaymentSystem getPayment() {
+        return this.payment;
+    }
+
+    public long getSaldo() {
+        return this.saldo;
+    }
+
+    public void setSaldo(long saldo) {
+        this.saldo = saldo;
     }
 
 }

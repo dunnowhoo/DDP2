@@ -4,12 +4,11 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import assignments.assignment2.Restaurant;
-import assignments.assignment2.User;
-import assignments.assignment3.LoginManager
 import assignments.assignment3.payment.CreditCardPayment;
 import assignments.assignment3.payment.DebitPayment;
 import assignments.assignment3.systemCLI.AdminSystemCLI;
 import assignments.assignment3.systemCLI.CustomerSystemCLI;
+import assignments.assignment3.systemCLI.UserSystemCLI;
 
 public class MainMenu {
     private final Scanner input;
@@ -23,8 +22,14 @@ public class MainMenu {
     }
 
     public static void main(String[] args) {
-        MainMenu mainMenu = new MainMenu(new Scanner(System.in), new LoginManager(new AdminSystemCLI(), new CustomerSystemCLI()));
-        mainMenu.run();
+        try {
+            restoList = new ArrayList<>();
+            initUser();
+            MainMenu mainMenu = new MainMenu(new Scanner(System.in), new LoginManager(new AdminSystemCLI(restoList), new CustomerSystemCLI(restoList)));
+            mainMenu.run();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void run(){
@@ -40,7 +45,7 @@ public class MainMenu {
                 default -> System.out.println("Pilihan tidak valid, silakan coba lagi.");
             }
         }
-
+        System.out.print("Terima kasih telah menggunakan DepeFood!");
         input.close();
     }
 
@@ -52,10 +57,24 @@ public class MainMenu {
         String noTelp = input.nextLine();
 
         // TODO: Validasi input login
+        User userLoggedIn = null;
+        for (User user : userList) {
+            if (user.getNama().equals(nama) && user.getNomorTelepon().equals(noTelp)) {
+                userLoggedIn = user;
+                break;
+            }
+        }
 
-        User userLoggedIn; // TODO: lengkapi
+        if (userLoggedIn == null) {
+            System.out.println("Nama pengguna atau nomor telepon salah. Silakan coba lagi.");
+            return;
+        }
 
-        loginManager.getSystem(userLoggedIn.role);
+        System.out.println("Selamat Datang " + userLoggedIn.getNama() + "!");
+        //loginManager.getSystem(userLoggedIn.getRole());
+        UserSystemCLI userSystem = loginManager.getSystem(userLoggedIn.role);
+        userSystem.setUserLoggedIn(userLoggedIn); // Set the logged in user
+        userSystem.run(nama, noTelp);
     }
 
     private static void printHeader(){
@@ -87,7 +106,6 @@ public class MainMenu {
         userList.add(new User("Sofita Yasusa", "084789607222", "sofita.susa@gmail.com", "T", "Customer", new DebitPayment(), 750000));
         userList.add(new User("Dekdepe G", "080811236789", "ddp2.gampang@gmail.com", "S", "Customer", new CreditCardPayment(), 1800000));
         userList.add(new User("Aurora Anum", "087788129043", "a.anum@gmail.com", "U", "Customer", new DebitPayment(), 650000));
-
         userList.add(new User("Admin", "123456789", "admin@gmail.com", "-", "Admin", new CreditCardPayment(), 0));
         userList.add(new User("Admin Baik", "9123912308", "admin.b@gmail.com", "-", "Admin", new CreditCardPayment(), 0));
     }
