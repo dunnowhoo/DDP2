@@ -50,31 +50,31 @@ public class MainMenu {
     }
 
     private void login(){
-        System.out.println("\nSilakan Login:");
-        System.out.print("Nama: ");
-        String nama = input.nextLine();
-        System.out.print("Nomor Telepon: ");
-        String noTelp = input.nextLine();
+        System.out.println("\nSilakan Login:"); // Menampilkan pesan untuk meminta pengguna login
+        System.out.print("Nama: "); // Meminta input nama dari pengguna
+        String nama = input.nextLine(); // Menerima input nama dari pengguna
+        System.out.print("Nomor Telepon: "); // Meminta input nomor telepon dari pengguna
+        String noTelp = input.nextLine(); // Menerima input nomor telepon dari pengguna
 
         // TODO: Validasi input login
-        User userLoggedIn = null;
-        for (User user : userList) {
-            if (user.getNama().equals(nama) && user.getNomorTelepon().equals(noTelp)) {
-                userLoggedIn = user;
-                break;
+        User userLoggedIn = null; // Inisialisasi variabel userLoggedIn dengan null
+        for (User user : userList) { // Looping melalui daftar pengguna
+            if (user.getNama().equals(nama) && user.getNomorTelepon().equals(noTelp)) { // Jika nama dan nomor telepon cocok
+                userLoggedIn = user; // Set userLoggedIn dengan pengguna yang cocok
+                break; // Keluar dari loop
             }
         }
 
-        if (userLoggedIn == null) {
-            System.out.println("Nama pengguna atau nomor telepon salah. Silakan coba lagi.");
-            return;
+        if (userLoggedIn == null) { // Jika tidak ada pengguna yang cocok
+            System.out.println("Nama pengguna atau nomor telepon salah. Silakan coba lagi."); // Menampilkan pesan error
+            return; // Keluar dari metode
         }
 
-        System.out.println("Selamat Datang " + userLoggedIn.getNama() + "!");
+        System.out.println("Selamat Datang " + userLoggedIn.getNama() + "!"); // Menampilkan pesan selamat datang
         //loginManager.getSystem(userLoggedIn.getRole());
-        UserSystemCLI userSystem = loginManager.getSystem(userLoggedIn.role);
-        userSystem.setUserLoggedIn(userLoggedIn); // Set the logged in user
-        userSystem.run(nama, noTelp);
+        UserSystemCLI userSystem = loginManager.getSystem(userLoggedIn.role); // Mendapatkan sistem berdasarkan peran pengguna
+        userSystem.setUserLoggedIn(userLoggedIn); // Set pengguna yang sedang login
+        userSystem.run(nama, noTelp); // Menjalankan sistem dengan nama dan nomor telepon pengguna
     }
 
     private static void printHeader(){

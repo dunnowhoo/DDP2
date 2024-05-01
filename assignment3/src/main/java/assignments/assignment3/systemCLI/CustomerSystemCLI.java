@@ -128,62 +128,84 @@ public class CustomerSystemCLI extends UserSystemCLI{
     }
 
     void handleBayarBill(){
-        // TODO: Implementasi method untuk handle ketika customer ingin melihat menu
+        // Menampilkan header "Bayar Bill"
         System.out.println("--------------Bayar Bill----------------");
         while (true) {
+            // Meminta ID Order dari pengguna
             System.out.print("Masukkan Order ID: ");
             String orderId = input.nextLine().trim();
+            // Mencari order berdasarkan ID
             Order order = getOrderOrNull(orderId);
+            // Jika order tidak ditemukan, tampilkan pesan error dan ulangi loop
             if(order == null){
                 System.out.println("Order ID tidak dapat ditemukan.\n");
                 continue;
             }
+            // Jika order sudah selesai (sudah dibayar), tampilkan pesan dan keluar dari metode
             if(order.getOrderFinished()){
                 System.out.printf("Pesanan dengan ID ini sudah lunas!\n", order.getOrderId());
                 return;
             }
+            // Tampilkan detail bill pesanan
             System.out.println("");
             System.out.print(outputBillPesanan(order));
+            // Tampilkan opsi metode pembayaran
             System.out.println("\nOpsi Pembayaran:");
             System.out.println("1. Credit Card");
             System.out.println("2. Debit");
+            // Meminta pilihan metode pembayaran dari pengguna
             System.out.print("Pilihan Metode Pembayaran: ");
             int paymentMethod = Integer.parseInt(input.nextLine().trim());
             boolean paymentSuccess = false;
             long totalHarga = Math.round(order.getTotalHarga());
+            // Jika pengguna memilih metode pembayaran Credit Card
             if(paymentMethod == 1){
+                // Jika pengguna memiliki metode pembayaran Credit Card
                 if (userLoggedIn.getPayment() instanceof CreditCardPayment) {
                     CreditCardPayment creditCardPayment = (CreditCardPayment) userLoggedIn.getPayment();
                     creditCardPayment.setUser(userLoggedIn);
+                    // Proses pembayaran
                     paymentSuccess = creditCardPayment.processPayment(totalHarga);
                 } else {
+                    // Jika pengguna tidak memiliki metode pembayaran Credit Card, tampilkan pesan error
                     System.out.println("Metode pembayaran kartu kredit tidak tersedia untuk pengguna ini.\n");
                 }
+                // Jika pengguna memilih metode pembayaran Debit
             } else if(paymentMethod == 2){
+                // Jika pengguna memiliki metode pembayaran Debit
                 if (userLoggedIn.getPayment() instanceof DebitPayment) {
                     DebitPayment debitPayment = (DebitPayment) userLoggedIn.getPayment();
                     debitPayment.setUser(userLoggedIn);
+                    // Proses pembayaran
                     paymentSuccess = debitPayment.processPayment(totalHarga);
                 } else {
+                    // Jika pengguna tidak memiliki metode pembayaran Debit, tampilkan pesan error
                     System.out.println("Metode pembayaran debit tidak tersedia untuk pengguna ini.\n");
                 }
             } else {
+                // Jika pengguna memilih metode pembayaran yang tidak valid, tampilkan pesan error
                 System.out.println("Metode pembayaran tidak valid.\n");
             }
+            // Jika pembayaran berhasil
             if(paymentSuccess){
+                // Tambahkan total harga ke saldo restoran
                 Restaurant restaurant = order.getRestaurant();
                 restaurant.addSaldo(totalHarga);
+                // Update status pesanan menjadi selesai
                 handleUpdateStatusPesanan(orderId);
             } else {
+                // Jika pembayaran gagal, tampilkan pesan error
                 System.out.println("Pembayaran gagal.\n");
             }
+            // Keluar dari metode
             return;
         }
     }
 
     void handleUpdateStatusPesanan(String orderId){
-        // TODO: Implementasi method untuk handle ketika customer ingin update status pesanan
+        // Mencari order berdasarkan ID
         Order order = getOrderOrNull(orderId);
+        // Jika order ditemukan, set status pesanan menjadi selesai
         assert order != null;
         order.setOrderFinished(true);
     }

@@ -14,6 +14,9 @@ public class LoginManager {
     }
 
     //TODO: Solve the error :) (It's actually easy if you have done the other TODOs)
+    // Metode untuk mendapatkan sistem berdasarkan peran pengguna
+    // Jika peran pengguna adalah "Customer", maka akan mengembalikan sistem pelanggan
+    // Jika bukan, maka akan mengembalikan sistem admin
     public UserSystemCLI getSystem(String role){
         if(role.equals("Customer")){
             return customerSystem;
