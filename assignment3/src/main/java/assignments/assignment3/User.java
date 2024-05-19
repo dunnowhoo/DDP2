@@ -1,49 +1,70 @@
 package assignments.assignment3;
 
-import assignments.assignment2.Order;
+import java.util.ArrayList;
+import java.util.List;
+
 import assignments.assignment3.payment.DepeFoodPaymentSystem;
 
-import java.util.ArrayList;
-
 public class User {
-    
+
     private String nama;
     private String nomorTelepon;
     private String email;
-    private ArrayList<Order> orderHistory;
-    public String role;
-    private DepeFoodPaymentSystem payment;
-    private long saldo;
-
+    public final String role;
     private String lokasi;
-    public User(String nama, String nomorTelepon, String email, String lokasi, String role, DepeFoodPaymentSystem payment, long saldo){
+
+    private DepeFoodPaymentSystem paymentSystem;
+    private long saldo;
+    private ArrayList<Order> orderHistory;
+
+    public User(String nama, String nomorTelepon, String email, String lokasi, String role,
+                DepeFoodPaymentSystem paymentSystem, long saldo) {
         this.nama = nama;
         this.nomorTelepon = nomorTelepon;
         this.email = email;
         this.lokasi = lokasi;
         this.role = role;
-        this.payment = payment;
+        this.paymentSystem = paymentSystem;
         this.saldo = saldo;
         orderHistory = new ArrayList<>();
     }
+
     public String getEmail() {
         return email;
     }
+
     public String getNama() {
         return nama;
     }
+
     public String getLokasi() {
         return lokasi;
     }
+
     public String getNomorTelepon() {
         return nomorTelepon;
     }
-    public void addOrderHistory(Order order){
+
+    public long getSaldo() {
+        return saldo;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public DepeFoodPaymentSystem getPaymentSystem() {
+        return paymentSystem;
+    }
+
+    public void addOrderHistory(Order order) {
         orderHistory.add(order);
     }
-    public ArrayList<Order> getOrderHistory() {
+
+    public List<Order> getOrderHistory() {
         return orderHistory;
     }
+
     public boolean isOrderBelongsToUser(String orderId) {
         for (Order order : orderHistory) {
             if (order.getOrderId().equals(orderId)) {
@@ -52,22 +73,14 @@ public class User {
         }
         return false;
     }
-    @Override
-    public String toString() {
-        // TODO Auto-generated method stub
-        return String.format("User dengan nama %s dan nomor telepon %s", nama, nomorTelepon);
-    }
-
-    public DepeFoodPaymentSystem getPayment() {
-        return this.payment;
-    }
-
-    public long getSaldo() {
-        return this.saldo;
-    }
 
     public void setSaldo(long saldo) {
         this.saldo = saldo;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("User dengan nama %s dan nomor telepon %s", nama, nomorTelepon);
     }
 
 }

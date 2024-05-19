@@ -21,27 +21,26 @@ public class BillPrinter {
     private Stage stage;
     private MainApp mainApp;
     private User user;
+    private TableView<MenuItem> table;
+    private Label totalLabel;
 
     public BillPrinter(Stage stage, MainApp mainApp, User user) {
         this.stage = stage;
         this.mainApp = mainApp;
         this.user = user;
+        this.table = new TableView<>();
+        this.totalLabel = new Label();
     }
 
     private Scene createBillPrinterForm(){
         //TODO: Implementasi untuk menampilkan komponen hasil cetak bill
         VBox layout = new VBox(10);
-
+        layout.getChildren().addAll(table, totalLabel);
         return new Scene(layout, 400, 200);
     }
 
     private void printBill(String orderId) {
         //TODO: Implementasi validasi orderID
-        if (true) {
-
-        } else {
-
-        }
     }
 
     public Scene getScene() {
@@ -49,7 +48,7 @@ public class BillPrinter {
     }
 
     // Class ini opsional
-    public class MenuItem {
+    public static class MenuItem {
         private final StringProperty itemName;
         private final StringProperty price;
 

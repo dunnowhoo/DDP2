@@ -84,17 +84,16 @@ public class DepeFood {
     public static String getValidRestaurantName(String inputName) {
         String name = "";
         boolean isRestaurantNameValid = false;
-    
+
         while (!isRestaurantNameValid) {
             System.out.print("Nama: ");
-            boolean isRestaurantExist = restoList.stream()
-                    .anyMatch(restoran -> restoran.getNama().toLowerCase().equals(inputName.toLowerCase()));
+            boolean isRestaurantExist = restoList.stream().anyMatch(restoran -> restoran.getNama().toLowerCase().equals(inputName.toLowerCase()));
             boolean isRestaurantNameLengthValid = inputName.length() >= 4;
-    
+
             if (isRestaurantExist) {
                 return String.format("Restoran dengan nama %s sudah pernah terdaftar. Mohon masukkan nama yang berbeda!", inputName);
             } else if (!isRestaurantNameLengthValid) {
-               return "Nama Restoran tidak valid! Minimal 4 karakter diperlukan.";
+                return "Nama Restoran tidak valid! Minimal 4 karakter diperlukan.";
             } else {
                 name = inputName;
                 isRestaurantNameValid = true;
@@ -109,9 +108,9 @@ public class DepeFood {
                 return resto;
             }
         }
-        return null; 
+        return null;
     }
-    
+
     public static void handleTambahMenuRestoran(Restaurant restoran, String namaMakanan, double harga){
         restoran.addMenu(new Menu(namaMakanan, harga));
     }
@@ -131,30 +130,30 @@ public class DepeFood {
 
     public static String handleBuatPesanan(String namaRestoran, String tanggalPemesanan, int jumlahPesanan, List<String> listMenuPesananRequest) {
         System.out.println("--------------Buat Pesanan----------------");
-    
+
         Restaurant restaurant = getRestaurantByName(namaRestoran);
         if (restaurant == null) {
             System.out.println("Restoran tidak terdaftar pada sistem.\n");
             return null;
         }
-    
+
         if (!OrderGenerator.validateDate(tanggalPemesanan)) {
             System.out.println("Masukkan tanggal sesuai format (DD/MM/YYYY)");
             return null;
         }
-    
+
         if (!validateRequestPesanan(restaurant, listMenuPesananRequest)) {
             System.out.println("Mohon memesan menu yang tersedia di Restoran!");
             return null;
         }
-    
+
         Order order = new Order(
                 OrderGenerator.generateOrderID(namaRestoran, tanggalPemesanan, userLoggedIn.getNomorTelepon()),
                 tanggalPemesanan,
                 OrderGenerator.calculateDeliveryCost(userLoggedIn.getLokasi()),
                 restaurant,
                 getMenuRequest(restaurant, listMenuPesananRequest));
-    
+
         System.out.printf("Pesanan dengan ID %s diterima!", order.getOrderId());
         userLoggedIn.addOrderHistory(order);
         return order.getOrderId();
@@ -246,19 +245,19 @@ public class DepeFood {
 
     public static Order findUserOrderById(String orderId) {
         List<Order> orderHistory = userLoggedIn.getOrderHistory();
-        
+
         for (Order order : orderHistory) {
             if (order.getOrderId() == orderId) {
-                return order; 
-            }   
+                return order;
+            }
         }
-        return null; 
+        return null;
     }
 
     public static void handleUpdateStatusPesanan(Order order) {
         order.setOrderFinished(true);
     }
-    
+
     public static void setPenggunaLoggedIn(User user){
         userLoggedIn = user;
     }
@@ -266,9 +265,6 @@ public class DepeFood {
 
 
 
-    
-
-    
 
 
 
@@ -276,5 +272,8 @@ public class DepeFood {
 
 
 
-   
+
+
+
+
 }
