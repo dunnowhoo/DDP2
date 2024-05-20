@@ -2,6 +2,7 @@ package assignments.assignment4.page;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.TextField;
 
 public abstract class MemberMenu {
     private Scene scene;
@@ -20,9 +21,8 @@ public abstract class MemberMenu {
         return this.scene;
     }
 
-    protected void refresh(){
-        //TODO: Implemenetasi method ini untuk merefresh data yang dimiliki aplikasi
-        // Hint: Method ini digunakan pada *seluruh method* yang membutuhkan update
+    protected void refresh(TextField textField){
+        textField.clear();
     }
 
 }

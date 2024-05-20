@@ -13,8 +13,6 @@ import javafx.stage.Stage;
 import assignments.assignment4.MainApp;
 import assignments.assignment4.page.AdminMenu;
 import assignments.assignment4.page.CustomerMenu;
-
-
 import java.util.function.Consumer;
 
 public class LoginForm {
@@ -82,7 +80,7 @@ public class LoginForm {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Both fields must be filled!");
             alert.showAndWait();
         } else {
-            // Handle login logic
+            // Handle login logic here
             User userLoggedIn = DepeFood.getUser(name, phone);
 
             if (userLoggedIn == null) {
@@ -93,23 +91,26 @@ public class LoginForm {
 
             DepeFood.setPenggunaLoggedIn(userLoggedIn);
 
-            // Check role dari the logged-in user dan display menu yang sesuai
+            // Check the role of the logged-in user and display the appropriate menu
             if (userLoggedIn.getRole().equals("Admin")) {
                 // Display AdminMenu
                 AdminMenu adminMenu = new AdminMenu(stage, mainApp, userLoggedIn, DepeFood.getRestoList());
                 Scene adminScene = adminMenu.createBaseMenu();
+                mainApp.addScene("AdminMenu", adminScene); // Add the scene to the map
                 mainApp.setScene(adminScene);
             } else if (userLoggedIn.getRole().equals("Customer")) {
                 // Display CustomerMenu
-                CustomerMenu customerMenu = new CustomerMenu(stage, mainApp, userLoggedIn);
-                mainApp.addScene("CustomerMenu", customerMenu.getScene());
-                mainApp.setScene(mainApp.getScene("CustomerMenu"));
+                CustomerMenu customerMenu = new CustomerMenu(stage, mainApp, userLoggedIn, DepeFood.getRestoList());
+                Scene customerScene = customerMenu.createBaseMenu();
+                mainApp.addScene("CustomerMenu", customerScene); // Add the scene to the map
+                mainApp.setScene(customerScene);
             }
-            stage.show(); // Display new scene
+            nameInput.clear();
+            phoneInput.clear();
+            stage.show(); // Display the new scene
         }
     }
 
-    
 
     public Scene getScene(){
         return this.createLoginForm();

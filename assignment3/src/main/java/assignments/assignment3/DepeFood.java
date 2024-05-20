@@ -167,7 +167,6 @@ public class DepeFood {
                 System.out.println("Order ID tidak dapat ditemukan.\n");
                 continue;
             }
-
             if (order.getOrderFinished()) {
                 System.out.println("Pesanan dengan ID ini sudah lunas!\n");
                 return;
@@ -247,7 +246,7 @@ public class DepeFood {
         List<Order> orderHistory = userLoggedIn.getOrderHistory();
 
         for (Order order : orderHistory) {
-            if (order.getOrderId() == orderId) {
+            if (order.getOrderId().equalsIgnoreCase(orderId.trim())) {
                 return order;
             }
         }

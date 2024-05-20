@@ -2,6 +2,7 @@ package assignments.assignment4.page;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import assignments.assignment3.DepeFood;
@@ -86,9 +87,12 @@ public class AdminMenu extends MemberMenu{
         addRestaurantButton.setOnAction(e -> stage.setScene(createAddRestaurantForm()));
         addMenuButton.setOnAction(e -> stage.setScene(createAddMenuForm()));
         viewListButton.setOnAction(e -> stage.setScene(createViewRestaurantsForm()));
-        logoutButton.setOnAction(e -> handleLogout());
+        logoutButton.setOnAction(e -> {
+            handleLogout();
+        });
 
-        return new Scene(anchorPane);
+        scene = new Scene(anchorPane);
+        return scene;
     }
 
     private void handleLogout() {
@@ -242,11 +246,19 @@ public class AdminMenu extends MemberMenu{
         AnchorPane.setTopAnchor(restaurantNameLabel, 87.0);
         AnchorPane.setLeftAnchor(restaurantNameLabel, 169.0);
 
-        // Membuat text field untuk restaurant name input
-        TextField restaurantNameField = new TextField();
-        restaurantNameField.setPrefSize(449, 38);
-        AnchorPane.setTopAnchor(restaurantNameField, 123.0);
-        AnchorPane.setLeftAnchor(restaurantNameField, 31.0);
+        // Membuat ComboBox untuk restaurant name input
+        restaurantComboBox.setPrefSize(449, 38);
+        AnchorPane.setTopAnchor(restaurantComboBox, 123.0);
+        AnchorPane.setLeftAnchor(restaurantComboBox, 31.0);
+
+        // Membersihkan ComboBox
+        restaurantComboBox.getItems().clear();
+
+        // Menambahkan semua nama restoran ke ComboBox
+        Set<String> restaurantNames = restoList.stream()
+                .map(Restaurant::getNama)
+                .collect(Collectors.toSet());
+        restaurantComboBox.getItems().addAll(restaurantNames);
 
         // Membuat "Search" button
         Button searchButton = new Button("Search");
@@ -291,7 +303,6 @@ public class AdminMenu extends MemberMenu{
             };
         });
 
-
         // Membuat ScrollBar
         ScrollBar scrollBar = new ScrollBar();
         scrollBar.setOrientation(Orientation.VERTICAL);
@@ -301,11 +312,11 @@ public class AdminMenu extends MemberMenu{
         AnchorPane.setRightAnchor(scrollBar, 8.0);
 
         // Menambahkan components ke layout
-        anchorPane.getChildren().addAll(backButton, restaurantNameLabel, restaurantNameField, searchButton, table, scrollBar);
+        anchorPane.getChildren().addAll(backButton, restaurantNameLabel, restaurantComboBox, searchButton, table, scrollBar);
 
         // Set action untuk search button
         searchButton.setOnAction(e -> {
-            String restaurantName = restaurantNameField.getText().trim();
+            String restaurantName = restaurantComboBox.getValue();
             if (!restaurantName.isEmpty()) {
                 Restaurant restaurant = restoList.stream()
                         .filter(resto -> resto.getNama().equalsIgnoreCase(restaurantName))
@@ -328,7 +339,9 @@ public class AdminMenu extends MemberMenu{
             }
         });
 
-        backButton.setOnAction(e -> stage.setScene(createBaseMenu()));
+        backButton.setOnAction(e -> {
+            stage.setScene(createBaseMenu());
+        });
 
         // return scene
         viewRestaurantsScene = new Scene(anchorPane, 531, 731);
@@ -356,7 +369,6 @@ public class AdminMenu extends MemberMenu{
             // Jika valid, Membuat restaurant dan add ke list
             Restaurant restaurant = new Restaurant(nama);
             restoList.add(restaurant);
-            DepeFood.getRestoList().add(restaurant);
             // Inform successful addition
             Alert alert = new Alert(AlertType.INFORMATION,"Restaurant " + restaurant.getNama() + " Berhasil terdaftar.");
             alert.showAndWait();
